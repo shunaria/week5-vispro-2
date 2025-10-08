@@ -14,6 +14,10 @@ class _MyAppState extends State<MyApp> {
   StreamSubscription<Uri>? _sub;
   String _status = 'Waiting for link...';
 
+  
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +49,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _handleIncomingLink(Uri uri) {
+    setState(() => _status = 'Received link: $uri');
     // Misal link: myapp://details?id=123
     if (uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'details') {
       final id = uri.queryParameters['id'] ?? 'unknown';
@@ -67,6 +72,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Deep Link Demo',
+      navigatorKey: navigatorKey,
       home: Scaffold(
         appBar: AppBar(title: const Text('Home')),
         body: Center(child: Text(_status)),
